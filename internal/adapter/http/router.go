@@ -35,6 +35,24 @@ func NewRouter(
 		MaxAge:           300,
 	}))
 
+	// Root Welcome Landing Page (Prevents 404 on root domain)
+	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		RespondJSON(w, http.StatusOK, map[string]interface{}{
+			"service":     "U.S. DOL Prevailing Wage Backend Service",
+			"status":      "RUNNING",
+			"version":     "v1.0.0",
+			"docs":        "https://github.com/satyamjiyadav/Wage-determine",
+			"endpoints": map[string]string{
+				"health_check":     "/healthz",
+				"wage_lookup":      "/api/v1/wages/lookup?soc_code=15-1252.00&zip_code=94103",
+				"determine_level":  "POST /api/v1/wages/determine-level",
+				"batch_lookup":     "POST /api/v1/wages/batch-lookup",
+				"search_occupation": "/api/v1/occupations/search?q=Software",
+				"resolve_location":  "/api/v1/locations/resolve?zip_code=94103",
+			},
+		})
+	})
+
 	// System & Health Endpoints
 	r.Get("/healthz", healthHandler.Healthz)
 	r.Get("/metrics", healthHandler.Metrics)
