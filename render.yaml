@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: prevailing-wage-service
+    env: docker
+    plan: free
+    region: oregon
+    healthCheckPath: /healthz
+    autoDeploy: true
